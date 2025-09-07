@@ -69,7 +69,8 @@ class _MaskOCRCamState extends State<MaskOCRCam> {
         position: MaskForCameraViewInsideLinePosition.partOne,
         direction: MaskForCameraViewInsideLineDirection.horizontal,
       ),
-      boxBorderWidth: 2.6,
+      boxBorderWidth: 1.5,
+      boxBorderRadius: 10,
       cameraDescription: MaskForCameraViewCameraDescription.rear,
       onTake: (MaskForCameraViewResult res) =>  Navigator.pop(context, res)
     );
