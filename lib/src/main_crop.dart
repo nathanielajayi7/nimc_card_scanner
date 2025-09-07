@@ -26,7 +26,7 @@ FlashMode _flashMode = FlashMode.auto;
 class MaskForCameraView extends StatefulWidget {
   MaskForCameraView({super.key, 
     required this.ocrType,
-    this.title = "OCR Scan",
+    this.title = "",
     // this.boxWidth = 300.0,
     // this.boxHeight = 178.0,
     required this.boxWidth,
