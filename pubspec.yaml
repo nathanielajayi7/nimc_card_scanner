@@ -1,6 +1,6 @@
 name: nimc_card_scanner
-description: "A new Flutter package project."
-version: 0.0.1
+description: "This is a flutter OCR implementation to scan Nigerian National IDs, Passports & Drivers License"
+version: 0.0.1+1
 homepage: https://github.com/nathanielajayi7/nimc_card_scanner
 
 environment:
@@ -10,13 +10,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  google_ml_kit: ^0.20.0
   dotted_border: ^3.1.0
   camera: ^0.11.2
   path_provider: ^2.0.11
   path: ^1.8.1
   # flutter_face_api: ^7.1.325
   image: ^4.0.15
+  google_mlkit_text_recognition: ^0.15.0
 
 dev_dependencies:
   flutter_test:

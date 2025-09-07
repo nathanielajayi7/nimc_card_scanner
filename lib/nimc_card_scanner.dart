@@ -4,7 +4,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:nimc_card_scanner/src/main_crop.dart';
 import 'package:nimc_card_scanner/src/mask_camera.dart';
 import 'package:nimc_card_scanner/src/result.dart';
@@ -84,9 +84,7 @@ class NimcCardScanner<T extends ScanResult> {
     final inputImage = InputImage.fromFilePath(file.path);
 
     // result = '';
-
-    // ignore: deprecated_member_use
-    final textDetector = GoogleMlKit.vision.textRecognizer();
+    final textDetector = TextRecognizer();
     final RecognizedText recognisedText = await textDetector.processImage(
       inputImage,
     );
@@ -185,10 +183,16 @@ class NimcCardScanner<T extends ScanResult> {
             .trim();
       });
 
-      res.sixPartImage = extractImage(scanResult.sixthCroppedImage(image), image);
+      res.sixPartImage = extractImage(
+        scanResult.sixthCroppedImage(image),
+        image,
+      );
 
       //kyc img
-      res.sixPartImage = extractImage(scanResult.sixthCroppedImage(image), image);
+      res.sixPartImage = extractImage(
+        scanResult.sixthCroppedImage(image),
+        image,
+      );
 
       scanResult.kycImg = res.sixPartImage;
     }

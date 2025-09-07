@@ -20,6 +20,8 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
 
+  // String text = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,11 +32,14 @@ class MyHomePage extends StatelessWidget {
           children: [
             ElevatedButton(
               onPressed: () {
-                NimcCardScanner<DriverLicenseResult>().startScan(context).then(
-                  (value) {
-                    print(value.toString());
-                  }
-                );
+                NimcCardScanner<DriverLicenseResult>().startScan(context).then((
+                  value,
+                ) {
+                  print(value.toString());
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text(value.toString())));
+                });
               },
               child: const Text('Scan Driver\'s License'),
             ),
@@ -42,22 +47,28 @@ class MyHomePage extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 // print('hello');
-                NimcCardScanner<PassportResult>().startScan(context).then(
-                  (value) {
-                    print(value.toString());
-                  }
-                );
+                NimcCardScanner<PassportResult>().startScan(context).then((
+                  value,
+                ) {
+                  print(value.toString());
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text(value.toString())));
+                });
               },
               child: const Text('Scan Passport'),
             ),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                NimcCardScanner<NationalIdResult>().startScan(context).then(
-                  (value) {
-                    print(value.toString());
-                  }
-                );
+                NimcCardScanner<NationalIdResult>().startScan(context).then((
+                  value,
+                ) {
+                  print(value.toString());
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text(value.toString())));
+                });
               },
               child: const Text('Scan NIN Slip'),
             ),

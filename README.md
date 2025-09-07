@@ -1,6 +1,6 @@
 # NIMC Card Scanner
 
-This is a flutter OCR implementation to scan Nigerian National IDs, Passports 7 Drivers License and extract data from them.
+This is a flutter OCR implementation to scan Nigerian National IDs, Passports & Drivers License and extract data from them.
 
 This package from flutter:
 [LaoOCR](https://pub.dev/packages/laoocr) was forked, and extended for NIMC, Ecowas Passports and Drivers License.
