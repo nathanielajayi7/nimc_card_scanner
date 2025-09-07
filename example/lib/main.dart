@@ -30,7 +30,11 @@ class MyHomePage extends StatelessWidget {
           children: [
             ElevatedButton(
               onPressed: () {
-                NimcCardScanner<DriverLicenseResult>().startScan(context);
+                NimcCardScanner<DriverLicenseResult>().startScan(context).then(
+                  (value) {
+                    print(value.toString());
+                  }
+                );
               },
               child: const Text('Scan Driver\'s License'),
             ),
@@ -38,14 +42,22 @@ class MyHomePage extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 // print('hello');
-                NimcCardScanner<PassportResult>().startScan(context);
+                NimcCardScanner<PassportResult>().startScan(context).then(
+                  (value) {
+                    print(value.toString());
+                  }
+                );
               },
               child: const Text('Scan Passport'),
             ),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                NimcCardScanner<NationalIdResult>().startScan(context);
+                NimcCardScanner<NationalIdResult>().startScan(context).then(
+                  (value) {
+                    print(value.toString());
+                  }
+                );
               },
               child: const Text('Scan NIN Slip'),
             ),

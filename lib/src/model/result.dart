@@ -17,12 +17,12 @@ sealed class ScanResult {
 
 class PassportResult extends ScanResult {
   String? passportNumber;
-  String? surname;
+  // String? surname;
   String? givenNames;
 
   PassportResult({
     this.passportNumber,
-    this.surname,
+    // this.surname,
     this.givenNames,
     super.kycImg,
   });
@@ -31,6 +31,22 @@ class PassportResult extends ScanResult {
   @override
   SnipeData firstCroppedImage(Image image) {
     return SnipeData(xOffset: 285.0, yOffset: 46.0, width: 175.0, height: 55.0);
+  }
+
+  String get surname {
+    if (givenNames == null || givenNames!.isEmpty) {
+      return '';
+    }
+    List<String> parts = givenNames!.split(' ');
+    return parts.first;
+  }
+
+  String get firstName {
+    if (givenNames == null || givenNames!.isEmpty) {
+      return '';
+    }
+    List<String> parts = givenNames!.split(' ');
+    return parts[1];
   }
 
   @override
@@ -100,6 +116,8 @@ class PassportResult extends ScanResult {
         //   names.removeAt(i);
         // }
       }
+
+      print(result);
       givenNames = result.join(' ');
       //remove text not entirely made of capital letters
     }
@@ -108,8 +126,8 @@ class PassportResult extends ScanResult {
   //override to string
   @override
   String toString() {
-    return 'PassportResult{passportNumber: $passportNumber, surname: $surname, givenNames: $givenNames}';
-  }  
+    return 'PassportResult{passportNumber: $passportNumber, surname: $surname, firstname: $firstName,  givenNames: $givenNames}';
+  }
 }
 
 class DriverLicenseResult extends ScanResult {
@@ -183,7 +201,6 @@ class NationalIdResult extends ScanResult {
     return SnipeData(xOffset: 17, yOffset: 102, width: 120, height: 40);
   }
 
-
   @override
   SnipeData secondCroppedImage(Image image) {
     throw UnimplementedError();
@@ -212,6 +229,4 @@ class SnipeData {
     required this.width,
     required this.height,
   });
-
-
 }
