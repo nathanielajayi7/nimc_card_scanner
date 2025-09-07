@@ -1,7 +1,6 @@
 include: package:flutter_lints/flutter.yaml
 analyzer:
-  errors:
-    # avoid_shadowing_type_parameters: ignore
+
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options

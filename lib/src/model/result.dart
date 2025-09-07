@@ -70,7 +70,7 @@ class PassportResult extends ScanResult {
         //   (name) => name.toLowerCase().contains('nigeria'),
         // );
         // if (endIndex != -1) {
-          names = names.sublist(0, endIndex + 1).toList();
+        names = names.sublist(0, endIndex + 1).toList();
         // }
       }
 
@@ -80,7 +80,9 @@ class PassportResult extends ScanResult {
       names.forEach((name) {
         print(name);
 
-        if (name == name.toUpperCase() && name.trim().isNotEmpty && !name.trim().toLowerCase().startsWith('nigeria')) {
+        if (name == name.toUpperCase() &&
+            name.trim().isNotEmpty &&
+            !name.trim().toLowerCase().startsWith('nigeria')) {
           result.add(name);
         }
       });
@@ -104,25 +106,23 @@ class PassportResult extends ScanResult {
   }
 }
 
-
-
 class DriverLicenseResult extends ScanResult {
-
-  String idNumber;
-  String name;
-  String dob;
+  String? idNumber;
+  String? firstName;
+  String? lastName;
+  String? dob;
 
   DriverLicenseResult({
-    required this.idNumber,
-    required this.name,
-    required this.dob,
+    this.idNumber,
+    this.firstName,
+    this.lastName,
+    this.dob,
     super.kycImg,
   });
 
   @override
   SnipeData firstCroppedImage(Image image) {
-    // TODO: implement firstCroppedImage
-    throw UnimplementedError();
+    return SnipeData(xOffset: 170, yOffset: 90, width: 206, height: 50);
   }
 
   @override
@@ -136,7 +136,17 @@ class DriverLicenseResult extends ScanResult {
     // TODO: implement sixthCroppedImage
     throw UnimplementedError();
   }
-  
+
+  void extractNameAndDob(String s) {
+    // print(s);
+    //split by comma
+    List<String> parts = s.split(',');
+    lastName = parts.last.replaceAll("\n", " ").split(" ").last.trim();
+    firstName = parts.first.split("\n").last.trim();
+    dob = parts.first.split(" ")[1].trim();
+    //only accept numbers and dashes in dob
+    dob = dob?.replaceAll(RegExp(r'[^0-9\-]'), '');
+  }
 }
 
 class SnipeData {

@@ -58,8 +58,34 @@ class _CardAnalyzerState<T extends ScanResult> extends State<CardAnalyzer> {
                   child: Text('Re-analyze'),
                 ),
               ]
-            : ((T is DriverLicenseResult)
-                  ? [Text('Driver\'s License scanning not yet implemented')]
+            : ((T == DriverLicenseResult)
+                  ? [
+                      // Text('Cropped Image'),
+                      // res?.croppedImage != null
+                      //     ? MyImageView(imageBytes: res!.croppedImage!)
+                      //     : Container(),
+                      Text(
+                        'Name & Dob Image: ${(scanResult as DriverLicenseResult).firstName ?? ""} ${(scanResult as DriverLicenseResult).lastName ?? ""} ${(scanResult as DriverLicenseResult).dob ?? ""}',
+                      ),
+                      res?.firstPartImage != null
+                          ? MyImageView(imageBytes: res!.firstPartImage!)
+                          : Container(),
+
+                      // Text(
+                      //   'Date of Birth Image: ${(scanResult as DriverLicenseResult).dateOfBirth ?? ""}',
+                      // ),
+                      // res?.secondPartImage != null
+                      //     ? MyImageView(imageBytes: res!.secondPartImage!)
+                      //     : Container(),
+
+                      //button to re-analyze
+                      ElevatedButton(
+                        onPressed: () {
+                          analyzeCard();
+                        },
+                        child: Text('Re-analyze'),
+                      ),
+                    ]
                   :
         [
 
@@ -118,9 +144,22 @@ class _CardAnalyzerState<T extends ScanResult> extends State<CardAnalyzer> {
       setState(() {});
     }
 
+    if (T == DriverLicenseResult) {
+      scanResult = DriverLicenseResult(kycImg: res!.croppedImage) as T?;
 
-    if(T is DriverLicenseResult){
-      
+      img.Image? _img = img.decodeImage(res!.croppedImage!);
+
+      res!.firstPartImage = extractImage(
+        scanResult!.firstCroppedImage(_img!),
+        _img,
+      );
+
+      await performOcr(res!.firstPartImage!).then((value) {
+        (scanResult as DriverLicenseResult).extractNameAndDob(value ?? "");
+      });
+
+      //extract name and dob
+      setState(() {});
     }
   }
 

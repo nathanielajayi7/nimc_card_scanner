@@ -41,7 +41,7 @@ class _MaskOCRCamState extends State<MaskOCRCam> {
   @override
   Widget build(BuildContext context) {
     return widget.ocrType == 'idCard'
-        ? _buildShowResultList(widget.ocrSubType ?? "")
+        ? _buildShowResultList("whiteIdCard")
         : widget.ocrType == 'passport'
         ? _buildShowResultList(widget.ocrType)
         : Scaffold(
@@ -56,13 +56,14 @@ class _MaskOCRCamState extends State<MaskOCRCam> {
   }
 
   Widget _buildShowResultList(String _ocrType) {
+    print("_orcType ${_ocrType}");
     return MaskForCameraView(
       ocrType: _ocrType,
-      boxHeight: _ocrType == "whiteIdCard"
-          ? 187.0
-          : _ocrType == "greenIdCard"
-          ? 178.0
-          : 210,
+      boxHeight: (_ocrType == "whiteIdCard"
+                ? 165.0
+                : _ocrType == "greenIdCard"
+                ? 178.0
+                : 210),
       boxWidth: _ocrType == "whiteIdCard"
           ? 300.0
           : _ocrType == "greenIdCard"
@@ -75,7 +76,7 @@ class _MaskOCRCamState extends State<MaskOCRCam> {
       ),
       boxBorderWidth: 2.6,
       cameraDescription: MaskForCameraViewCameraDescription.rear,
-      onTake: (MaskForCameraViewResult res) => 1 == 2
+      onTake: (MaskForCameraViewResult res) => 1 == 1
           ? Navigator.pop(context, res)
           : (_ocrType == "whiteIdCard"
                     ? imageToText([
@@ -713,7 +714,7 @@ class _MaskOCRCamState extends State<MaskOCRCam> {
   late String result;
   List listResult = [];
   String passportAllTextExtract = '';
-  Future imageToText(List inputImgs) async {
+  Future imageToText(List<Uint8List?> inputImgs) async {
     listResult = [];
     if (widget.ocrType == 'idCard') {
       // listResult = [];
@@ -723,7 +724,7 @@ class _MaskOCRCamState extends State<MaskOCRCam> {
         }
         for (int i = 0; i < inputImgs.length; i++) {
           // print(inputImg);
-          Uint8List imageInUnit8List = inputImgs[i];
+          Uint8List imageInUnit8List = inputImgs[i]!;
           final tempDir = await getTemporaryDirectory();
           File file = await File('${tempDir.path}/image$i.png').create();
           file.writeAsBytesSync(imageInUnit8List);
@@ -876,7 +877,7 @@ class _MaskOCRCamState extends State<MaskOCRCam> {
 
         for (int i = 0; i < inputImgs.length; i++) {
           // print(inputImg);
-          Uint8List imageInUnit8List = inputImgs[i];
+          Uint8List imageInUnit8List = inputImgs[i]!;
           final tempDir = await getTemporaryDirectory();
           File file = await File('${tempDir.path}/image$i.png').create();
           file.writeAsBytesSync(imageInUnit8List);
@@ -1010,7 +1011,7 @@ class _MaskOCRCamState extends State<MaskOCRCam> {
       if (inputImgs.isEmpty) return;
       for (int i = 0; i < inputImgs.length; i++) {
         // print(inputImg);
-        Uint8List imageInUnit8List = inputImgs[i];
+        Uint8List imageInUnit8List = inputImgs[i]!;
         final tempDir = await getTemporaryDirectory();
         File file = await File('${tempDir.path}/image$i.png').create();
         file.writeAsBytesSync(imageInUnit8List);

@@ -213,6 +213,7 @@ import 'package:nimc_card_scanner/src/main_crop.dart';
 import 'package:nimc_card_scanner/src/mask_camera.dart';
 import 'package:nimc_card_scanner/src/result.dart';
 import 'package:nimc_card_scanner/src/screens/analyzer.dart';
+import 'package:nimc_card_scanner/src/testing_activity.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'src/enum/card_types.dart';
@@ -270,6 +271,16 @@ class NimcCardScanner<T extends ScanResult> {
             context,
             MaterialPageRoute(
               builder: (context) => CardAnalyzer<PassportResult>(res: result),
+            ),
+          );
+        }
+
+         if (T == DriverLicenseResult) {
+          //go to card analyzer screen
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CardAnalyzer<DriverLicenseResult>(res: result),
             ),
           );
         }
