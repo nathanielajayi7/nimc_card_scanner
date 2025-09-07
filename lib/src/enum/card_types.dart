@@ -1,5 +1,5 @@
 enum CardType {
-  idCard,
+  driverLicense,
   nationalId,
   passport
 }

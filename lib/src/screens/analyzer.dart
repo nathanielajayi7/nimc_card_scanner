@@ -71,6 +71,19 @@ class _CardAnalyzerState<T extends ScanResult> extends State<CardAnalyzer> {
                           ? MyImageView(imageBytes: res!.firstPartImage!)
                           : Container(),
 
+                      Text(
+                        'License Number Image: ${(scanResult as DriverLicenseResult).licenseNumber ?? ""}',
+                      ),
+                      res?.firstPartImage != null
+                          ? MyImageView(imageBytes: res!.secondPartImage!)
+                          : Container(),
+
+                      //kyc img
+                      Text('KYC Image:'),
+                      res?.firstPartImage != null
+                          ? MyImageView(imageBytes: res!.sixPartImage!)
+                          : Container(),
+
                       // Text(
                       //   'Date of Birth Image: ${(scanResult as DriverLicenseResult).dateOfBirth ?? ""}',
                       // ),
@@ -86,25 +99,52 @@ class _CardAnalyzerState<T extends ScanResult> extends State<CardAnalyzer> {
                         child: Text('Re-analyze'),
                       ),
                     ]
-                  :
+                  : (T == NationalIdResult
+                        ? [
+                            // Text('Cropped Image'),
+                            // res?.croppedImage != null
+                            //     ? MyImageView(imageBytes: res!.croppedImage!)
+                            //     : Container(),
+                            Text(
+                              'NIN Number Image: ${(scanResult as NationalIdResult).idNumber ?? ""}',
+                            ),
+                            res?.firstPartImage != null
+                                ? MyImageView(imageBytes: res!.firstPartImage!)
+                                : Container(),
+
+                            //kyc img
+                            Text('KYC Image:'),
+                            res?.firstPartImage != null
+                                ? MyImageView(imageBytes: res!.sixPartImage!)
+                                : Container(),
+
+                            //button to re-analyze
+                            ElevatedButton(
+                              onPressed: () {
+                                analyzeCard();
+                              },
+                              child: Text('Re-analyze'),
+                            ),
+                          ]
+                        :
         [
 
-        ]),
+        ])),
       ),
     );
   }
 
   void analyzeCard() async {
-    print(T);
+    // print(T);
     if (T == PassportResult) {
       scanResult = PassportResult(kycImg: res!.croppedImage) as T?;
 
-      img.Image? _img = img.decodeImage(res!.croppedImage!);
+      img.Image? image = img.decodeImage(res!.croppedImage!);
       //extract kycImg
       setState(() {
         res!.sixPartImage = extractImage(
-          scanResult!.sixthCroppedImage(_img!),
-          _img,
+          scanResult!.sixthCroppedImage(image!),
+          image,
         );
       });
 
@@ -113,8 +153,8 @@ class _CardAnalyzerState<T extends ScanResult> extends State<CardAnalyzer> {
       //extract passport number
       setState(() {
         res!.firstPartImage = extractImage(
-          scanResult!.firstCroppedImage(_img!),
-          _img,
+          scanResult!.firstCroppedImage(image!),
+          image,
         );
       });
 
@@ -130,8 +170,8 @@ class _CardAnalyzerState<T extends ScanResult> extends State<CardAnalyzer> {
               .trim();
 
       res!.secondPartImage = extractImage(
-        scanResult!.secondCroppedImage(_img!),
-        _img,
+        scanResult!.secondCroppedImage(image!),
+        image,
       );
 
       (scanResult as PassportResult).givenNames = await performOcr(
@@ -147,19 +187,69 @@ class _CardAnalyzerState<T extends ScanResult> extends State<CardAnalyzer> {
     if (T == DriverLicenseResult) {
       scanResult = DriverLicenseResult(kycImg: res!.croppedImage) as T?;
 
-      img.Image? _img = img.decodeImage(res!.croppedImage!);
+      img.Image? image = img.decodeImage(res!.croppedImage!);
 
       res!.firstPartImage = extractImage(
-        scanResult!.firstCroppedImage(_img!),
-        _img,
+        scanResult!.firstCroppedImage(image!),
+        image,
       );
 
       await performOcr(res!.firstPartImage!).then((value) {
         (scanResult as DriverLicenseResult).extractNameAndDob(value ?? "");
       });
 
-      //extract name and dob
-      setState(() {});
+      res!.secondPartImage = extractImage(
+        scanResult!.secondCroppedImage(image),
+        image,
+      );
+
+      await performOcr(res!.secondPartImage!).then((value) {
+        (scanResult as DriverLicenseResult).licenseNumber = value
+            ?.split(' ')
+            .last
+            .trim();
+      });
+
+      //kyc img
+      setState(() {
+        res!.sixPartImage = extractImage(
+          scanResult!.sixthCroppedImage(image),
+          image,
+        );
+        scanResult!.kycImg = res!.sixPartImage;
+      });
+    }
+
+    if (T == NationalIdResult) {
+      scanResult = NationalIdResult(kycImg: res!.croppedImage) as T?;
+
+      img.Image? image = img.decodeImage(res!.croppedImage!);
+
+      res!.firstPartImage = extractImage(
+        scanResult!.firstCroppedImage(image!),
+        image,
+      );
+
+      await performOcr(res!.firstPartImage!).then((value) {
+        //split by comma
+        (scanResult as NationalIdResult).idNumber = (value?.split(' ') ?? [])
+            .last
+            .trim();
+      });
+
+      res!.sixPartImage = extractImage(
+        scanResult!.sixthCroppedImage(image),
+        image,
+      );
+
+      //kyc img
+      setState(() {
+        res!.sixPartImage = extractImage(
+          scanResult!.sixthCroppedImage(image),
+          image,
+        );
+        scanResult!.kycImg = res!.sixPartImage;
+      });
     }
   }
 

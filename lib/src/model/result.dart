@@ -77,9 +77,9 @@ class PassportResult extends ScanResult {
       // print(names);
 
       // print(names.length);;
+      // ignore: avoid_function_literals_in_foreach_calls
       names.forEach((name) {
-        print(name);
-
+        // print(name);
         if (name == name.toUpperCase() &&
             name.trim().isNotEmpty &&
             !name.trim().toLowerCase().startsWith('nigeria')) {
@@ -111,12 +111,14 @@ class DriverLicenseResult extends ScanResult {
   String? firstName;
   String? lastName;
   String? dob;
+  String? licenseNumber;
 
   DriverLicenseResult({
     this.idNumber,
     this.firstName,
     this.lastName,
     this.dob,
+    this.licenseNumber,
     super.kycImg,
   });
 
@@ -125,27 +127,61 @@ class DriverLicenseResult extends ScanResult {
     return SnipeData(xOffset: 170, yOffset: 90, width: 206, height: 50);
   }
 
+  //license no
   @override
   SnipeData secondCroppedImage(Image image) {
-    // TODO: implement secondCroppedImage
-    throw UnimplementedError();
+    return SnipeData(xOffset: 0, yOffset: 50.0, width: 230, height: 35);
   }
 
+  //kyc image
   @override
   SnipeData sixthCroppedImage(Image image) {
-    // TODO: implement sixthCroppedImage
-    throw UnimplementedError();
+    return SnipeData(xOffset: 17, yOffset: 80, width: 168, height: 200);
   }
 
   void extractNameAndDob(String s) {
     // print(s);
     //split by comma
     List<String> parts = s.split(',');
-    lastName = parts.last.replaceAll("\n", " ").split(" ").last.trim();
+    // print(parts[1]);
+    lastName = parts.last.split("\n").first.trim();
     firstName = parts.first.split("\n").last.trim();
     dob = parts.first.split(" ")[1].trim();
     //only accept numbers and dashes in dob
     dob = dob?.replaceAll(RegExp(r'[^0-9\-]'), '');
+  }
+}
+
+class NationalIdResult extends ScanResult {
+  String? idNumber;
+  String? firstName;
+  String? lastName;
+  String? dob;
+
+  NationalIdResult({
+    this.idNumber,
+    this.firstName,
+    this.lastName,
+    this.dob,
+    super.kycImg,
+  });
+
+  //nin number
+  @override
+  SnipeData firstCroppedImage(Image image) {
+    return SnipeData(xOffset: 17, yOffset: 102, width: 120, height: 40);
+  }
+
+
+  @override
+  SnipeData secondCroppedImage(Image image) {
+    throw UnimplementedError();
+  }
+
+  //kyc image
+  @override
+  SnipeData sixthCroppedImage(Image image) {
+    return SnipeData(xOffset: 420, yOffset: 57, width: 299, height: 141);
   }
 }
 

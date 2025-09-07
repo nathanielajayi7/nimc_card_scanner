@@ -9,8 +9,6 @@ import 'border_type.dart';
 import 'camera_description.dart';
 import 'crop_image.dart';
 import 'inside_line.dart';
-import 'inside_line_direction.dart';
-import 'inside_line_position.dart';
 import 'result.dart';
 
 CameraController? _cameraController;
@@ -26,7 +24,7 @@ FlashMode _flashMode = FlashMode.auto;
 
 // ignore: must_be_immutable
 class MaskForCameraView extends StatefulWidget {
-  MaskForCameraView({
+  MaskForCameraView({super.key, 
     required this.ocrType,
     this.title = "OCR Scan",
     // this.boxWidth = 300.0,
@@ -227,7 +225,7 @@ class _MaskForCameraViewState extends State<MaskForCameraView> {
                           color: Colors.transparent,
                           child: InkWell(
                             splashColor: widget.takeButtonActionColor
-                                .withOpacity(0.26),
+                                .withValues(alpha:0.26),
                             onTap: () async {
                               if (isRunning) {
                                 return;
@@ -393,10 +391,9 @@ Future<MaskForCameraViewResult?> _cropPicture(
 class _IconButton extends StatelessWidget {
   const _IconButton(
     this.icon, {
-    Key? key,
     required this.color,
     required this.onTap,
-  }) : super(key: key);
+  });
   final IconData icon;
   final Color color;
   final VoidCallback onTap;
@@ -416,39 +413,10 @@ class _IconButton extends StatelessWidget {
 
 ///
 ///
-// Line inside box
 
-class _Line extends StatelessWidget {
-  const _Line(this.widget, {Key? key}) : super(key: key);
-  final MaskForCameraView widget;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width:
-          widget.insideLine!.direction == null ||
-              widget.insideLine!.direction ==
-                  MaskForCameraViewInsideLineDirection.horizontal
-          ? widget.boxWidth
-          : widget.boxBorderWidth,
-      height:
-          widget.insideLine!.direction != null &&
-              widget.insideLine!.direction ==
-                  MaskForCameraViewInsideLineDirection.vertical
-          ? widget.boxHeight
-          : widget.boxBorderWidth,
-      color: widget.boxBorderColor,
-    );
-  }
-}
-
-///
-///
-// Progress widget. Used during cropping.
 
 class _IsCropping extends StatelessWidget {
-  const _IsCropping({Key? key, required this.isRunning, required this.widget})
-    : super(key: key);
+  const _IsCropping({required this.isRunning, required this.widget});
   final bool isRunning;
   final MaskForCameraView widget;
 
@@ -460,14 +428,3 @@ class _IsCropping extends StatelessWidget {
   }
 }
 
-///
-///
-// To get position index for crop
-
-int _position(MaskForCameraViewInsideLinePosition? position) {
-  int p = 5;
-  if (position != null) {
-    p = position.index + 1;
-  }
-  return p;
-}

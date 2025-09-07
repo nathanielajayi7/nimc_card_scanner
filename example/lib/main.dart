@@ -30,8 +30,6 @@ class MyHomePage extends StatelessWidget {
           children: [
             ElevatedButton(
               onPressed: () {
-                // TODO: Implement scan driver's license
-                 
                 NimcCardScanner<DriverLicenseResult>().startScan(context);
               },
               child: const Text('Scan Driver\'s License'),
@@ -39,7 +37,7 @@ class MyHomePage extends StatelessWidget {
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                print('hello');
+                // print('hello');
                 NimcCardScanner<PassportResult>().startScan(context);
               },
               child: const Text('Scan Passport'),
@@ -47,7 +45,7 @@ class MyHomePage extends StatelessWidget {
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                // TODO: Implement scan NIN slip
+                NimcCardScanner<NationalIdResult>().startScan(context);
               },
               child: const Text('Scan NIN Slip'),
             ),

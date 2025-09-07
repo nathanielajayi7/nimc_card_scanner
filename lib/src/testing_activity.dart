@@ -16,20 +16,24 @@ class TestingPassportParameters extends StatefulWidget {
 
   @override
   State<TestingPassportParameters> createState() =>
-      _TestingPassportParametersState(this.res);
+      _TestingPassportParametersState();
 }
 
 class _TestingPassportParametersState extends State<TestingPassportParameters> {
-  MaskForCameraViewResult res;
+  late MaskForCameraViewResult res;
 
   int xOffset = 0;
   int yOffset = 0;
   double width = 0;
   double height = 0;
 
+  @override
+  void initState() {
+    res = widget.res;
+    super.initState();
+  }
 
-
-  _TestingPassportParametersState(this.res);
+  _TestingPassportParametersState();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -169,7 +173,7 @@ class _TestingPassportParametersState extends State<TestingPassportParameters> {
                             Slider(
                               value: xOffset.toDouble(),
                               min: 0,
-                              max: 250,
+                              max: 500,
                               divisions: 100,
                               label: '$xOffset',
                               onChanged: (value) async {
@@ -243,7 +247,11 @@ class _TestingPassportParametersState extends State<TestingPassportParameters> {
                             Slider(
                               value: width,
                               min: 0,
-                              max: decodeImage(res.croppedImage!)?.width.toDouble() ?? 500,
+                              max:
+                                  decodeImage(
+                                    res.croppedImage!,
+                                  )?.width.toDouble() ??
+                                  500,
                               divisions: 100,
                               label: '${width.toInt()}',
                               onChanged: (value) async {
@@ -252,7 +260,9 @@ class _TestingPassportParametersState extends State<TestingPassportParameters> {
                                   "passport",
                                   decodeImage(res.croppedImage!)!,
                                   MaskForCameraViewInsideLine(
-                                    position: MaskForCameraViewInsideLinePosition.center,
+                                    position:
+                                        MaskForCameraViewInsideLinePosition
+                                            .center,
                                   ),
                                   xOffset,
                                   yOffset,
@@ -274,7 +284,11 @@ class _TestingPassportParametersState extends State<TestingPassportParameters> {
                             Slider(
                               value: height,
                               min: 0,
-                              max: decodeImage(res.croppedImage!)?.height.toDouble() ?? 500,
+                              max:
+                                  decodeImage(
+                                    res.croppedImage!,
+                                  )?.height.toDouble() ??
+                                  500,
                               divisions: 100,
                               label: '${height.toInt()}',
                               onChanged: (value) async {
@@ -283,7 +297,9 @@ class _TestingPassportParametersState extends State<TestingPassportParameters> {
                                   "passport",
                                   decodeImage(res.croppedImage!)!,
                                   MaskForCameraViewInsideLine(
-                                    position: MaskForCameraViewInsideLinePosition.center,
+                                    position:
+                                        MaskForCameraViewInsideLinePosition
+                                            .center,
                                   ),
                                   xOffset,
                                   yOffset,
@@ -326,14 +342,14 @@ class _TestingPassportParametersState extends State<TestingPassportParameters> {
     // w = (image.width).toDouble() - 350;
     // h = 35;
 
-    y = (50 + yOffset).toDouble();
-    x = (300 - xOffset).toDouble();
-    w = image.width - 20 - width;
-    h = image.height - 250 - height;
-    print('x = $x');
-    print('y = $y');
-    print('w = $w');
-    print('h = $h');
+    y = (yOffset).toDouble();
+    x = (xOffset).toDouble();
+    w = width;
+    h = height;
+    debugPrint('x = $x');
+    debugPrint('y = $y');
+    debugPrint('w = $w');
+    debugPrint('h = $h');
 
     // Image firstCroppedImage = copyCrop(
     //   image,
@@ -359,13 +375,5 @@ class _TestingPassportParametersState extends State<TestingPassportParameters> {
     Uint8List secondCroppedBytes = Uint8List.fromList(secondCroppedList);
 
     return previousResult..secondPartImage = secondCroppedBytes;
-  }
-
-  int _position(MaskForCameraViewInsideLinePosition? position) {
-    int p = 5;
-    if (position != null) {
-      p = position.index + 1;
-    }
-    return p;
   }
 }
