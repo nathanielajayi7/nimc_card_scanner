@@ -1,39 +1,44 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# NIMC Card Scanner
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
+This is a flutter OCR implementation to scan Nigerian National IDs, Passports 7 Drivers License and extract data from them.
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
+This package from flutter:
+[LaoOCR](https://pub.dev/packages/laoocr) was forked, and extended for NIMC, Ecowas Passports and Drivers License.
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+The refactoring was proposed to also make it extendable for other more use-cases.
 
-## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
 
-## Getting started
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+## Installation
 
-## Usage
+Install via Flutter Pub
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+```bash
+  flutter pub add nimc_card_scanner
+```
+    
+## Usage/Examples
 
 ```dart
-const like = 'sample';
+ ElevatedButton(
+              onPressed: () {
+                NimcCardScanner<DriverLicenseResult>()
+                .startScan(context)
+                .then(
+                (value) {
+                    print(value.toString());
+            }
+        );
+    },
+    child: const Text('Scan Driver\'s License'),
+),
 ```
 
-## Additional information
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+## Authors
+
+- [@nathanielajayi7](https://www.github.com/nathanielajayi7)
+
+Please, feel free to contribute. Thank you.
