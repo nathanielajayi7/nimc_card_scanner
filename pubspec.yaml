@@ -1,7 +1,7 @@
 name: nimc_card_scanner
 description: "A new Flutter package project."
 version: 0.0.1
-homepage:
+homepage: https://github.com/nathanielajayi7/nimc_card_scanner
 
 environment:
   sdk: ^3.8.1
