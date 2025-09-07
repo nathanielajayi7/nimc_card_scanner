@@ -104,6 +104,12 @@ class PassportResult extends ScanResult {
       //remove text not entirely made of capital letters
     }
   }
+
+  //override to string
+  @override
+  String toString() {
+    return 'PassportResult{passportNumber: $passportNumber, surname: $surname, givenNames: $givenNames}';
+  }  
 }
 
 class DriverLicenseResult extends ScanResult {
@@ -150,6 +156,11 @@ class DriverLicenseResult extends ScanResult {
     //only accept numbers and dashes in dob
     dob = dob?.replaceAll(RegExp(r'[^0-9\-]'), '');
   }
+
+  @override
+  String toString() {
+    return 'DriverLicenseResult{idNumber: $idNumber, firstName: $firstName, lastName: $lastName, dob: $dob, licenseNumber: $licenseNumber}';
+  }
 }
 
 class NationalIdResult extends ScanResult {
@@ -183,6 +194,11 @@ class NationalIdResult extends ScanResult {
   SnipeData sixthCroppedImage(Image image) {
     return SnipeData(xOffset: 420, yOffset: 57, width: 299, height: 141);
   }
+
+  @override
+  String toString() {
+    return 'NationalIdResult{idNumber: $idNumber, firstName: $firstName, lastName: $lastName, dob: $dob}';
+  }
 }
 
 class SnipeData {
@@ -196,4 +212,6 @@ class SnipeData {
     required this.width,
     required this.height,
   });
+
+
 }
