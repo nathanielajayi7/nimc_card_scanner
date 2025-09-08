@@ -5,9 +5,9 @@ import 'package:image/image.dart';
 // import 'package:flutter/material.dart';
 
 sealed class ScanResult {
-  Uint8List? kycImg;
+  Uint8List? kycImg, croppedImage;
 
-  ScanResult({this.kycImg});
+  ScanResult({this.kycImg, this.croppedImage});
 
   SnipeData firstCroppedImage(Image image);
   SnipeData secondCroppedImage(Image image);

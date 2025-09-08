@@ -1,6 +1,6 @@
 name: nimc_card_scanner
 description: "This is a flutter OCR implementation to scan Nigerian National IDs, Passports & Drivers License"
-version: 0.0.1+1
+version: 0.0.1+2
 homepage: https://github.com/nathanielajayi7/nimc_card_scanner
 
 environment:

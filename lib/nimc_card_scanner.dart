@@ -94,6 +94,7 @@ class NimcCardScanner<T extends ScanResult> {
 
   Future<T> analyzeCard(MaskForCameraViewResult res) async {
     ScanResult? scanResult;
+
     // print(T);
     if (T == PassportResult) {
       scanResult = PassportResult(kycImg: res.croppedImage) as T?;
@@ -196,6 +197,8 @@ class NimcCardScanner<T extends ScanResult> {
 
       scanResult.kycImg = res.sixPartImage;
     }
+
+    scanResult?.croppedImage = res.croppedImage;
 
     return scanResult as T;
   }
